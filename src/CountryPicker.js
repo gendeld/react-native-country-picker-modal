@@ -1,7 +1,7 @@
 // @flow
 
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   StyleSheet,
@@ -14,15 +14,16 @@ import {
   ListView,
   ScrollView,
   Platform
-} from 'react-native'
+} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js';
 
-import cca2List from '../data/cca2.json'
-import { getHeightPercent } from './ratio'
-import CloseButton from './CloseButton'
-import countryPickerStyles from './CountryPicker.style'
-import KeyboardAvoidingView from './KeyboardAvoidingView'
+import cca2List from '../data/cca2.json';
+import { getHeightPercent } from './ratio';
+import CloseButton from './CloseButton';
+import countryPickerStyles from './CountryPicker.style';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
 
 const countries = require('../data/countries.json');
 
@@ -312,80 +313,82 @@ export default class CountryPicker extends Component {
 
   render() {
     return (
-      <View>
-        <TouchableOpacity
-          disabled={this.props.disabled}
-          onPress={() => this.setState({ modalVisible: true })}
-          activeOpacity={0.7}
-        >
-          {this.props.children ? (
-            this.props.children
-          ) : (
-            <View
-              style={[styles.touchFlag, { marginTop: 5 }]}
-            >
-              {CountryPicker.renderFlag(thic.countries[this.props.cca2])}
-            </View>
-          )}
-        </TouchableOpacity>
-        <Modal
-          transparent={this.props.transparent}
-          animationType={this.props.animationType}
-          visible={this.state.modalVisible}
-          onRequestClose={() => this.setState({ modalVisible: false })}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.header}>
-              {this.props.closeable && (
-                <CloseButton
-                  image={this.props.closeButtonImage}
-                  styles={[styles.closeButton, styles.closeButtonImage]}
-                  onPress={() => this.onClose()}
-                />
-              )}
-              {this.props.filterable && (
-                <TextInput
-                  autoFocus={this.props.autoFocusFilter}
-                  autoCorrect={false}
-                  placeholder={this.props.filterPlaceholder}
-                  placeholderTextColor={this.props.filterPlaceholderTextColor}
-                  style={[
-                    styles.input,
-                    !this.props.closeable && styles.inputOnly
-                  ]}
-                  onChangeText={this.handleFilterChange}
-                  value={this.state.filter}
-                />
-              )}
-            </View>
-            <KeyboardAvoidingView behavior="padding">
-              <View style={styles.contentContainer}>
-                <ListView
-                  keyboardShouldPersistTaps="always"
-                  enableEmptySections
-                  ref={listView => (this._listView = listView)}
-                  dataSource={this.state.dataSource}
-                  renderRow={country => this.renderCountry(country)}
-                  initialListSize={30}
-                  pageSize={15}
-                  onLayout={({ nativeEvent: { layout: { y: offset } } }) =>
-                    this.setVisibleListHeight(offset)
-                  }
-                />
-                <ScrollView
-                  contentContainerStyle={styles.letters}
-                  keyboardShouldPersistTaps="always"
-                >
-                  {this.state.filter === '' &&
-                    this.state.letters.map((letter, index) =>
-                      this.renderLetters(letter, index)
-                    )}
-                </ScrollView>
+      <SafeAreaView
+        <View>
+          <TouchableOpacity
+            disabled={this.props.disabled}
+            onPress={() => this.setState({ modalVisible: true })}
+            activeOpacity={0.7}
+          >
+            {this.props.children ? (
+              this.props.children
+            ) : (
+              <View
+                style={[styles.touchFlag, { marginTop: 5 }]}
+              >
+                {CountryPicker.renderFlag(thic.countries[this.props.cca2])}
               </View>
-            </KeyboardAvoidingView>
-          </View>
-        </Modal>
-      </View>
+            )}
+          </TouchableOpacity>
+          <Modal
+            transparent={this.props.transparent}
+            animationType={this.props.animationType}
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setState({ modalVisible: false })}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.header}>
+                {this.props.closeable && (
+                  <CloseButton
+                    image={this.props.closeButtonImage}
+                    styles={[styles.closeButton, styles.closeButtonImage]}
+                    onPress={() => this.onClose()}
+                  />
+                )}
+                {this.props.filterable && (
+                  <TextInput
+                    autoFocus={this.props.autoFocusFilter}
+                    autoCorrect={false}
+                    placeholder={this.props.filterPlaceholder}
+                    placeholderTextColor={this.props.filterPlaceholderTextColor}
+                    style={[
+                      styles.input,
+                      !this.props.closeable && styles.inputOnly
+                    ]}
+                    onChangeText={this.handleFilterChange}
+                    value={this.state.filter}
+                  />
+                )}
+              </View>
+              <KeyboardAvoidingView behavior="padding">
+                <View style={styles.contentContainer}>
+                  <ListView
+                    keyboardShouldPersistTaps="always"
+                    enableEmptySections
+                    ref={listView => (this._listView = listView)}
+                    dataSource={this.state.dataSource}
+                    renderRow={country => this.renderCountry(country)}
+                    initialListSize={30}
+                    pageSize={15}
+                    onLayout={({ nativeEvent: { layout: { y: offset } } }) =>
+                      this.setVisibleListHeight(offset)
+                    }
+                  />
+                  <ScrollView
+                    contentContainerStyle={styles.letters}
+                    keyboardShouldPersistTaps="always"
+                  >
+                    {this.state.filter === '' &&
+                      this.state.letters.map((letter, index) =>
+                        this.renderLetters(letter, index)
+                      )}
+                  </ScrollView>
+                </View>
+              </KeyboardAvoidingView>
+            </View>
+          </Modal>
+        </View>
+      </SafeAreaView>
     )
   }
 }
