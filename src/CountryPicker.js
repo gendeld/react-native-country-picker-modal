@@ -70,7 +70,7 @@ export default class CountryPicker extends Component {
   static renderEmojiFlag(country, emojiStyle) {
     return (
       <Text style={[styles.emojiFlag, emojiStyle]}>
-        {!!country ? <Emoji name={country.flag} /> : null}
+        {country ? <Emoji name={country.flag} /> : null}
       </Text>
     );
   }
@@ -98,7 +98,7 @@ export default class CountryPicker extends Component {
     this.countries = null;
     this.Emoji = null;
 
-    if (!!props.isStatePicker) {
+    if (props.isStatePicker) {
       this.countries = require('../data/states.json');
       this.Emoji = <View />;
     } else {
@@ -314,27 +314,27 @@ export default class CountryPicker extends Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <View>
-          <TouchableOpacity
-            disabled={this.props.disabled}
-            onPress={() => this.setState({ modalVisible: true })}
-            activeOpacity={0.7}
-          >
-            {this.props.children ? (
-              this.props.children
-            ) : (
-              <View style={[styles.touchFlag, { marginTop: 5 }]}>
-                {CountryPicker.renderFlag(thic.countries[this.props.cca2])}
-              </View>
-            )}
-          </TouchableOpacity>
-          <Modal
-            transparent={this.props.transparent}
-            animationType={this.props.animationType}
-            visible={this.state.modalVisible}
-            onRequestClose={() => this.setState({ modalVisible: false })}
-          >
+      <View>
+        <TouchableOpacity
+          disabled={this.props.disabled}
+          onPress={() => this.setState({ modalVisible: true })}
+          activeOpacity={0.7}
+        >
+          {this.props.children ? (
+            this.props.children
+          ) : (
+            <View style={[styles.touchFlag, { marginTop: 5 }]}>
+              {CountryPicker.renderFlag(thic.countries[this.props.cca2])}
+            </View>
+          )}
+        </TouchableOpacity>
+        <Modal
+          transparent={this.props.transparent}
+          animationType={this.props.animationType}
+          visible={this.state.modalVisible}
+          onRequestClose={() => this.setState({ modalVisible: false })}
+        >
+          <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalContainer}>
               <View style={styles.header}>
                 {this.props.closeable && (
@@ -387,9 +387,9 @@ export default class CountryPicker extends Component {
                 </View>
               </KeyboardAvoidingView>
             </View>
-          </Modal>
-        </View>
-      </SafeAreaView>
+          </SafeAreaView>
+        </Modal>
+      </View>
     );
   }
 }
